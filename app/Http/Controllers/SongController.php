@@ -59,7 +59,17 @@ class SongController extends Controller
      */
     public function show(Song $song)
     {
-        //
+        //return single song;
+        $song = Song::find($song->id);
+        if (!$song) {
+            return response()->json([
+                'message' => "song not found!"
+            ], 404);
+        } else {
+            return response()->json([
+                'song' => $song
+            ], 200);
+        }
     }
 
     /**
