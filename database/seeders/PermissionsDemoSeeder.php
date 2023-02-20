@@ -31,6 +31,7 @@ class PermissionsDemoSeeder extends Seeder
         // create roles and assign existing permissions
         // $role1 = Role::find("title","user");
         $role1 = Role::where('name', 'user')->first();
+        // dd($role1);
         $role1->givePermissionTo('read artists');
         // $role1->givePermissionTo('delete artists');
 
