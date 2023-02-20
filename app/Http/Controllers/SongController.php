@@ -90,9 +90,23 @@ class SongController extends Controller
      * @param  \App\Models\Song  $song
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSongRequest $request, Song $song)
+    public function update(StoreSongRequest $request, Song $song)
     {
-        //
+        // return 5;
+
+        // dd($request->all());
+        // return;
+        $song->update($request->all());
+
+        if (!$song) {
+            return response()->json(['message' => 'song not found'], 404);
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => "song Updated successfully!",
+            'song' => $song
+        ], 200);
     }
 
     /**
@@ -104,5 +118,16 @@ class SongController extends Controller
     public function destroy(Song $song)
     {
         //
+        $song->delete();
+
+        if (!$song) {
+            return response()->json([
+                'message' => 'song not found'
+            ], 404);
+        }
+        return response()->json([
+            'status' => true,
+            'message' => 'Article deleted successfully'
+        ], 200);
     }
 }

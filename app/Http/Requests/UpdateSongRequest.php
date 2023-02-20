@@ -13,7 +13,7 @@ class UpdateSongRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,6 +25,10 @@ class UpdateSongRequest extends FormRequest
     {
         return [
             //
+            'name' => 'required|max:30',
+            'description' => 'required',
+            'album_id' => 'required',
+            'user_id' => 'required',
         ];
     }
 }
