@@ -40,6 +40,9 @@ class AlbumController extends Controller
         $album = Album::create([
             'title' => $request->title,
             'description' => $request->description,
+            'artist_id' => $request->artist_id,
+            'user_id' => $request->user_id,
+
         ]);
         return new AlbumResource($album);
     }
