@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AlbumController;
 use App\Http\Controllers\Api\LyricsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ControllerRegister;
 
 // use Illuminate\Http\Controllers\Api\LyricsController;
 
@@ -21,6 +22,10 @@ use App\Http\Controllers\ArtistController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::post('register',[ControllerRegister::class,'register'])->name('register');
+Route::post('login',[ControllerRegister::class,'login'])->name('login');
+Route::get('logout',[ControllerRegister::class,'logout'])->name('logout');
 
 Route::apiResource('albums', AlbumController::class);
 
