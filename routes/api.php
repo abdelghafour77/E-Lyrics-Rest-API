@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SongController;
+use App\Http\Controllers\ArtistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // ressources for the APIcfor songs table
 Route::apiResource('songs', SongController::class);
+
+// ressources for the APIcfor artists table
+Route::apiResource('artists', ArtistController::class);

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
 use App\Models\Artist;
 
 class ArtistSeeder extends Seeder
@@ -15,6 +16,7 @@ class ArtistSeeder extends Seeder
      */
     public function run()
     {
+
         // create 10 artists without using factory containing name description and user_id
         Artist::create([
             'name' => 'Artist 1',
@@ -66,5 +68,6 @@ class ArtistSeeder extends Seeder
             'description' => 'Artist 10 description',
             'user_id' => 1,
         ]);
+
     }
 }

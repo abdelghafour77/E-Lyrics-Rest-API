@@ -17,6 +17,12 @@ class SongController extends Controller
     {
         //
         $songs = Song::all();
+
+        foreach ($songs as $song) {
+            $album = $song->album;
+            $song->album_name = $album->title;
+        }
+
         return response()->json([
             'status' => 'success',
             'result' => $songs
@@ -66,6 +72,8 @@ class SongController extends Controller
                 'message' => "song not found!"
             ], 404);
         } else {
+            $album = $song->album;
+            $song->album_name = $album->title;
             return response()->json([
                 'song' => $song
             ], 200);
@@ -99,7 +107,8 @@ class SongController extends Controller
         $song->update($request->all());
 
         if (!$song) {
-            return response()->json(['message' => 'song not found'], 404);
+            return response()->json(['message' =>
+            'song not found'], 404);
         }
 
         return response()->json([
