@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Album extends Model
 {
     use HasFactory;
+     protected $fillable = ['title', 'description', 'artist_id', 'user_id'];
 
     // public function songs()
     // {

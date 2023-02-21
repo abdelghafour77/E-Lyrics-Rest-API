@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\AlbumResource;
 use App\Models\Album;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateAlbumRequest;
 
 class AlbumController extends Controller
 {
@@ -76,9 +77,16 @@ class AlbumController extends Controller
      * @param  \App\Models\Album  $album
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Album $album)
+    public function update(UpdateAlbumRequest $request, Album $album)
     {
-        //
+        $album->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'artist_id' => $request->artist_id,
+            'user_id' => $request->user_id,
+
+        ]);
+        return new AlbumResource($album);
     }
 
     /**

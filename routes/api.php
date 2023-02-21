@@ -1,11 +1,12 @@
 <?php
 
 use App\Http\Controllers\Api\AlbumController;
+use App\Http\Controllers\Api\LyricsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControllerRegister;
-
 use App\Http\Controllers\Api\LyricsController;
+
 
 //include JWT provider "Tymon\JWTAuth\Providers\JWT\Provider"
 use Tymon\JWTAuth\Providers\JWT\Provider;
@@ -47,4 +48,3 @@ Route::apiResource('songs', SongController::class);
 
 // ressources for the APIcfor artists table
 Route::apiResource('artists', ArtistController::class);
-
