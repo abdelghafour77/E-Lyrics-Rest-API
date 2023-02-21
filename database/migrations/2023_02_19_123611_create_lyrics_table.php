@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('lyrics', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('lyrics');
+            $table->text('content');
             $table->foreignId('user_id');
             $table->foreignId('song_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

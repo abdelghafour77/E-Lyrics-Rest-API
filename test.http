@@ -1,0 +1,87 @@
+POST http://127.0.0.1:8000/api/songs
+Content-type: application/json
+
+{
+    "name": "cold",
+    "description": "so goood",
+    "album_id": 1,
+    "user_id": 1
+}
+
+###
+
+GET http://127.0.0.1:8000/api/songs
+
+###
+
+DELETE http://127.0.0.1:8000/api/songs/4
+
+###
+PATCH  http://127.0.0.1:8000/api/songs/3
+Content-type: application/json
+
+{
+    "name": "mama",
+    "description": "so not true",
+    "album_id": 1,
+    "user_id": 1
+}
+
+###
+
+GET http://127.0.0.1:8000/api/songs
+
+###
+
+POST http://127.0.0.1:8000/api/songs
+content-type: application/json
+
+{
+    "name": "abdo silence",
+    "description": "so not true",
+    "album_id": 1,
+    "user_id": 1
+}
+
+###
+PATCH  http://127.0.0.1:8000/api/songs/5
+content-type: application/json
+
+{
+    "name": "abdo ",
+    "description": "so not true",
+    "album_id": 1,
+    "user_id": 1
+}
+
+###
+GET http://127.0.0.1:8000/api/songs/1
+
+###
+GET http://127.0.0.1:8000/api/artists
+
+###
+POST http://127.0.0.1:8000/api/artists
+content-type: application/json
+
+{
+    "name": "abdoZin",
+    "description": "so not true",
+    "user_id": 1
+}
+
+###
+GET http://127.0.0.1:8000/api/artists/2
+
+###
+PATCH  http://127.0.0.1:8000/api/artists/2
+content-type: application/json
+
+{
+    "name": "abdoHHH",
+    "description": "so not true",
+    "user_id": 1
+}
+
+###
+DELETE http://127.0.0.1:8000/api/artists/2
