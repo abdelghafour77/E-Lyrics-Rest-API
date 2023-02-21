@@ -12,6 +12,7 @@ class Song extends Model
 
     protected $fillable = ['name', 'description', 'album_id', 'user_id'];
 
+
     // public function album()
     // {
     //     return $this->belongsTo(Album::class, 'album_id');
