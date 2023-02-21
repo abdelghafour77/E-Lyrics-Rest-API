@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('lyrics', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('lyrics');
+            $table->text('content');
             $table->foreignId('user_id');
-            $table->foreignId('album_id');
+            $table->foreignId('song_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('album_id')->references('id')->on('albums')->onDelete('cascade');
+            $table->foreign('song_id')->references('id')->on('songs')->onDelete('cascade');
             $table->timestamps();
         });
     }
