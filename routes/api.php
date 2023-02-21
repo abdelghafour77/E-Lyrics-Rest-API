@@ -5,9 +5,11 @@ use App\Http\Controllers\Api\LyricsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ControllerRegister;
+use App\Http\Controllers\Api\LyricsController;
 
-// use Illuminate\Http\Controllers\Api\LyricsController;
 
+//include JWT provider "Tymon\JWTAuth\Providers\JWT\Provider"
+use Tymon\JWTAuth\Providers\JWT\Provider;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\ArtistController;
 
@@ -34,7 +36,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::apiResource('lyrics', LyricsController::class);
+Route::apiResource('lyrics',LyricsController::class);
+// create route for lyrics methode get return message from api file
+// Route::get('lyrics', [LyricsController::class, 'getLyrics']);
+
+
+
 
 // ressources for the APIcfor songs table
 Route::apiResource('songs', SongController::class);
