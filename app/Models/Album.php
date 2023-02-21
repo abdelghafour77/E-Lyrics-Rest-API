@@ -16,9 +16,4 @@ class Album extends Model
     // {
     //     return $this->hasMany(Song::class, 'album_id');
     // }
-<<<<<<< HEAD
-
-=======
-=
->>>>>>> ffac61b5d980c0e77cea9dc1215edcd4c2c1a607
 }
