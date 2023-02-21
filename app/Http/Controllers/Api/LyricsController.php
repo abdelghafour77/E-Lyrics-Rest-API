@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class LyricsController extends Controller
 {
+    // public function getLyrics()
+    // {
+    //     // $lyrics = Lyrics::all();
+    //     return "hhhh";gu
+    // }
     /**
      * Display a listing of the resource.
      *
