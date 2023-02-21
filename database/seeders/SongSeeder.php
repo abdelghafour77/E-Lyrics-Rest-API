@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Song;
 
+
 class SongSeeder extends Seeder
 {
     /**
@@ -136,5 +137,6 @@ class SongSeeder extends Seeder
             'user_id' => 1,
             'album_id' => 7,
         ]);
+
     }
 }
