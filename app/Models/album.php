@@ -2,18 +2,11 @@
 
 namespace App\Models;
 
-
-use App\Models\Song;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-
-class Album extends Model
+class album extends Model
 {
     use HasFactory;
-
-    // public function songs()
-    // {
-    //     return $this->hasMany(Song::class, 'album_id');
-    // }
+    protected $fillable = ['title', 'description', 'artist_id', 'user_id'];
 }
