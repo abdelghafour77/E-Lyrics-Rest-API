@@ -33,6 +33,12 @@ class LyricsController extends Controller
     {
         $lyrics = Lyrics::all();
         return LyricsResource::collection($lyrics);
+
+        // return response()->json([
+        //     'status' => 'success',
+        //     'result' => $lyrics
+        // ]);
+        
     }
 
     /**

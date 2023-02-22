@@ -10,4 +10,15 @@ class Lyrics extends Model
     use HasFactory;
     protected $fillable = ['title','content', 'lyrics', 'user_id', 'song_id'];
 
+    public function song()
+    {
+        return $this->belongsTo(Song::class, 'song_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+
 }
