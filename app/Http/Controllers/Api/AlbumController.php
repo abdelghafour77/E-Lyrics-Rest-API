@@ -24,7 +24,13 @@ class AlbumController extends Controller
 
     public function index()
     {
-        return Album::all();
+        // return Album::all();
+        // get all albums and songs associated with to each album
+        $albums = Album::with('songs')->get();
+        return response()->json([
+            'status' => 'success',
+            'result' => $albums
+        ], 200);
     }
 
     /**
@@ -104,6 +110,7 @@ class AlbumController extends Controller
      */
     public function destroy(Album $album)
     {
-        return $album->delete();
+        $album->delete();
+        return response()->json(null, 204);
     }
 }

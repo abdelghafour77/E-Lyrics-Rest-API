@@ -100,6 +100,7 @@ class LyricsController extends Controller
         $lyrics->update($request->all());
         return response()->json([
             'status' => 'success',
+            'message' => 'lyrics updated successfully',
             'result' => $lyrics
         ]);
 
@@ -113,10 +114,23 @@ class LyricsController extends Controller
      * @param  \App\Models\Lyrics  $lyrics
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Lyrics $lyrics)
+    // create function to delete lyrics and return status depending on the result
+    public function destroy($lyrics)
     {
-        $lyrics->delete();
-
-        return response(null, 204);
+        $lyrics = Lyrics::find($lyrics);
+        if ($lyrics) {
+            $lyrics->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'lyrics deleted successfully',
+                'result' => $lyrics
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'lyrics not deleted',
+                'result' => $lyrics
+            ]);
+        }
     }
 }
