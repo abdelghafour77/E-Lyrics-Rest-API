@@ -24,6 +24,10 @@ class ArtistController extends Controller
     {
         //
         $artists = Artist::all();
+        foreach ($artists as $artist) {
+            $user = $artist->user;
+            $artist->user_name = $user->name;
+        }
         return response()->json([
             'status' => 'success',
             'result' => $artists

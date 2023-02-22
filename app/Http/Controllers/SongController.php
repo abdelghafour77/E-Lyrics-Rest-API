@@ -28,6 +28,9 @@ class SongController extends Controller
         foreach ($songs as $song) {
             $album = $song->album;
             $song->album_name = $album->title;
+
+            $user = $song->user;
+            $song->user_name = $user->name;
         }
 
         return response()->json([
