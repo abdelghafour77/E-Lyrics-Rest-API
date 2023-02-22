@@ -135,19 +135,22 @@ class SongController extends Controller
      * @param  \App\Models\Song  $song
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Song $song)
+    public function destroy($song)
     {
-        //
-        $song->delete();
-
-        if (!$song) {
+        $song = Song::find($song);
+        if ($song) {
+            $song->delete();
             return response()->json([
-                'message' => 'song not found'
-            ], 404);
+                'status' => 'success',
+                'message' => 'song deleted successfully',
+                'result' => $song
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'song not deleted',
+                'result' => $song
+            ]);
         }
-        return response()->json([
-            'status' => true,
-            'message' => 'Article deleted successfully'
-        ], 200);
     }
 }
