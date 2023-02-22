@@ -86,4 +86,24 @@ content-type: application/json
 ###
 DELETE http://127.0.0.1:8000/api/artists/2
 
+###
+POST http://127.0.0.1:8000/api/register
+content-type: application/json
 
+{
+    "name": "abdo",
+    "email": "abdo@gmail.com",
+    "password": "12345678",
+}
+
+
+###
+POST http://127.0.0.1:8000/api/songs
+Content-type: application/json
+
+{
+    "name": "cold",
+    "description": "so goood",
+    "album_id": 1,
+    "user_id": 1
+}
