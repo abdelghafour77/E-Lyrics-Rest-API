@@ -13,8 +13,8 @@ class Album extends Model
     use HasFactory;
     protected $fillable = ['title', 'description', 'artist_id', 'user_id'];
 
-    // public function songs()
-    // {
-    //     return $this->hasMany(Song::class, 'album_id');
-    // }
+    public function songs()
+    {
+        return $this->hasMany(Song::class, 'album_id');
+    }
 }
