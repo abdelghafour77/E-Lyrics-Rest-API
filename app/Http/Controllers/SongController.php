@@ -13,6 +13,13 @@ class SongController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    // check middleware in constructor
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function index()
     {
         //

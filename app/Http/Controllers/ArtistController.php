@@ -13,6 +13,13 @@ class ArtistController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    // check middleware in constructor
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     public function index()
     {
         //
@@ -45,8 +52,8 @@ class ArtistController extends Controller
         $artist = Artist::create($request->all());
         return response()->json([
             'status' => true,
-            'message' => "song Created successfully!",
-            'song' => $artist
+            'message' => "Artist Created successfully!",
+            'artist' => $artist
         ], 201);
     }
 
