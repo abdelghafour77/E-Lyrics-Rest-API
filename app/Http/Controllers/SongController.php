@@ -62,7 +62,7 @@ class SongController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => "song Created successfully!",
+            'message' => "Song created successfully!",
             'song' => $song
         ], 201);
     }
@@ -79,6 +79,7 @@ class SongController extends Controller
         $song = Song::find($song->id);
         if (!$song) {
             return response()->json([
+                'status' => true,
                 'message' => "song not found!"
             ], 404);
         } else {
