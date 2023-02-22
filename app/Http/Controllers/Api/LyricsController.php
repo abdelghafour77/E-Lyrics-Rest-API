@@ -8,6 +8,8 @@ use App\Http\Resources\LyricsResource;
 use App\Models\Lyrics;
 use Illuminate\Http\Request;
 
+use function Termwind\render;
+
 class LyricsController extends Controller
 {
     // public function getLyrics()
@@ -85,9 +87,16 @@ class LyricsController extends Controller
      * @param  \App\Models\Lyrics  $lyrics
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Lyrics $lyrics)
+    public function update(Request $request, $lyrics)
     {
+        $lyrics = Lyrics::find($lyrics);
+
         $lyrics->update($request->all());
+        return response()->json([
+            'status' => 'success',
+            'result' => $lyrics
+        ]);
+
 
         return new LyricsResource($lyrics);
     }
