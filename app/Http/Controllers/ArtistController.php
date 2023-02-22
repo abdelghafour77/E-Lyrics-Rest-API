@@ -22,18 +22,14 @@ class ArtistController extends Controller
 
     public function index()
     {
-        //
-        $artists = Artist::all();
-        foreach ($artists as $artist) {
-            $user = $artist->user;
-            $artist->user_name = $user->name;
-        }
+        // get artists and user who created the artist and albums associated with each artist
+        $artists = Artist::with('user', 'albums')->get();
         return response()->json([
             'status' => 'success',
             'result' => $artists
         ]);
     }
-
+    // vhjdskqbcvse
     /**
      * Show the form for creating a new resource.
      *
