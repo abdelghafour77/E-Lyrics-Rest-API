@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Lyrics extends Model
 {
     use HasFactory;
-    protected $fillable = ['title','content', 'lyrics', 'user_id', 'song_id'];
+    protected $fillable = ['title', 'content', 'lyrics', 'user_id', 'song_id'];
 
     public function song()
     {
@@ -19,6 +19,4 @@ class Lyrics extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
-
 }
