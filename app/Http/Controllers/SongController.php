@@ -131,16 +131,19 @@ class SongController extends Controller
     {
         $song = Song::find($song);
 
-        if (!$song) {
+        if ($song) {
+            $song->delete();
             return response()->json([
-                'message' => 'song not found'
-            ], 404);
+                'status' => 'success',
+                'message' => 'song deleted successfully',
+                'result' => $song
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'song not deleted',
+                'result' => $song
+            ]);
         }
-
-        $song->delete();
-        return response()->json([
-            'status' => true,
-            'message' => 'Article deleted successfully'
-        ], 200);
     }
 }
