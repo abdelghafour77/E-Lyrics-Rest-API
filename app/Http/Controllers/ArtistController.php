@@ -63,10 +63,12 @@ class ArtistController extends Controller
      * @param  \App\Models\Artist  $artist
      * @return \Illuminate\Http\Response
      */
-    public function show(Artist $artist)
+    public function show($artist)
     {
         //
-        $artist = Artist::find($artist->id);
+        // return $artist->id;
+        // $artist = Artist::find($artist);
+        $artist = Artist::with('albums', 'user')->find($artist);
         if (!$artist) {
             return response()->json([
                 'status' => 'error',
@@ -97,10 +99,10 @@ class ArtistController extends Controller
      * @param  \App\Models\Artist  $artist
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArtistRequest $request, Artist $artist)
+    public function update(UpdateArtistRequest $request, $artist)
     {
         //
-        $artist = Artist::find($artist->id);
+        $artist = Artist::find($artist);
         if (!$artist) {
             return response()->json([
                 'status' => 'error',
@@ -121,10 +123,10 @@ class ArtistController extends Controller
      * @param  \App\Models\Artist  $artist
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Artist $artist)
+    public function destroy($artist)
     {
         //
-        $artist = Artist::find($artist->id);
+        $artist = Artist::find($artist);
         if (!$artist) {
             return response()->json([
                 'status' => 'error',

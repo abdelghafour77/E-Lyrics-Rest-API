@@ -25,9 +25,9 @@ use App\Http\Controllers\ArtistController;
 |
 */
 
-Route::post('register',[ControllerRegister::class,'register'])->name('register');
-Route::post('login',[ControllerRegister::class,'login'])->name('login');
-Route::get('logout',[ControllerRegister::class,'logout'])->name('logout');
+Route::post('register', [ControllerRegister::class, 'register'])->name('register');
+Route::post('login', [ControllerRegister::class, 'login'])->name('login');
+Route::get('logout', [ControllerRegister::class, 'logout'])->name('logout');
 
 Route::apiResource('albums', AlbumController::class);
 
@@ -36,7 +36,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::apiResource('lyrics',LyricsController::class);
+Route::apiResource('lyrics', LyricsController::class);
 // create route for lyrics methode get return message from api file
 // Route::get('lyrics', [LyricsController::class, 'getLyrics']);
 
