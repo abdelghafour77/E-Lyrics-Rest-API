@@ -108,9 +108,23 @@ class AlbumController extends Controller
      * @param  \App\Models\Album  $album
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Album $album)
+    public function destroy($album)
     {
-        $album->delete();
-        return response()->json(null, 204);
+
+        $album = Album::find($album);
+        if ($album) {
+            $album->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'album deleted successfully',
+                'result' => $album
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'album not deleted',
+                'result' => $album
+            ]);
+        }
     }
 }
