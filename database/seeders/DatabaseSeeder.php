@@ -22,7 +22,11 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         $this->call([
-            RoleSeeder::class,
+            // PermissionsDemoSeeder::class,
+            // RoleSeeder::class,
+            // RoleSeeder::class,
+            // PermissionRoleSeeder::class,
+            PermissionsSeeder::class,
             AdminSeeder::class,
             UserSeeder::class,
             ArtistSeeder::class,
