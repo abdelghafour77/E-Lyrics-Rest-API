@@ -121,20 +121,23 @@ class ArtistController extends Controller
      * @param  \App\Models\Artist  $artist
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Artist $artist)
+    public function destroy($artist)
     {
         //
-        $artist = Artist::find($artist->id);
-        if (!$artist) {
+        $artist = Artist::find($artist);
+        if ($artist) {
+            $artist->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'artist deleted successfully',
+                'result' => $artist
+            ]);
+        } else {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Artist not found'
-            ], 404);
+                'message' => 'artist not deleted',
+                'result' => $artist
+            ]);
         }
-        $artist->delete();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Artist deleted successfully',
-        ]);
-    }
+}
 }
