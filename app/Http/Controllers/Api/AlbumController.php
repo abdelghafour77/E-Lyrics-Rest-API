@@ -24,13 +24,17 @@ class AlbumController extends Controller
 
     public function index()
     {
-        // return Album::all();
-        // get all albums and songs associated with to each album
-        $albums = Album::with('songs')->get();
-        return response()->json([
-            'status' => 'success',
-            'result' => $albums
-        ], 200);
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin', 'moderator', 'user'])) { // return Album::all();
+            // get all albums and songs associated with to each album
+            $albums = Album::with('songs')->get();
+            return response()->json([
+                'status' => 'success',
+                'result' => $albums
+            ], 200);
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -51,15 +55,22 @@ class AlbumController extends Controller
      */
     public function store(Request $request)
     {
-        $album = Album::create([
-            'title' => $request->title,
-            'description' => $request->description,
-            'artist_id' => $request->artist_id,
-            'user_id' => $request->user_id,
 
-        ]);
-        return new AlbumResource($album);
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin', 'moderator'])) { // return Album::all();
+            $album = Album::create([
+                'title' => $request->title,
+                'description' => $request->description,
+                'artist_id' => $request->artist_id,
+                'user_id' => $request->user_id,
+
+            ]);
+            return new AlbumResource($album);
+        } else {
+            abort(403);
+        }
     }
+
 
     /**
      * Display the specified resource.
@@ -69,7 +80,12 @@ class AlbumController extends Controller
      */
     public function show(Album $album)
     {
-        return new AlbumResource($album);
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin', 'moderator', 'user'])) {
+            return new AlbumResource($album);
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -92,14 +108,19 @@ class AlbumController extends Controller
      */
     public function update(UpdateAlbumRequest $request, Album $album)
     {
-        $album->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'artist_id' => $request->artist_id,
-            'user_id' => $request->user_id,
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin'])) {
+            $album->update([
+                'title' => $request->title,
+                'description' => $request->description,
+                'artist_id' => $request->artist_id,
+                'user_id' => $request->user_id,
 
-        ]);
-        return new AlbumResource($album);
+            ]);
+            return new AlbumResource($album);
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -110,21 +131,25 @@ class AlbumController extends Controller
      */
     public function destroy($album)
     {
-
-        $album = Album::find($album);
-        if ($album) {
-            $album->delete();
-            return response()->json([
-                'status' => 'success',
-                'message' => 'album deleted successfully',
-                'result' => $album
-            ]);
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin'])) {
+            $album = Album::find($album);
+            if ($album) {
+                $album->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'album deleted successfully',
+                    'result' => $album
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'album not deleted',
+                    'result' => $album
+                ]);
+            }
         } else {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'album not deleted',
-                'result' => $album
-            ]);
+            abort(403);
         }
     }
 }

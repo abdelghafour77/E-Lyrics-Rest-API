@@ -7,16 +7,16 @@ use App\Http\Requests\StoreLyricsRequest;
 use App\Http\Resources\LyricsResource;
 use App\Models\Lyrics;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+// use spatie
+use Spatie\Permission\Models\Role;
+
 
 use function Termwind\render;
 
 class LyricsController extends Controller
 {
-    // public function getLyrics()
-    // {
-    //     // $lyrics = Lyrics::all();
-    //     return "hhhh";gu
-    // }
+
     /**
      * Display a listing of the resource.
      *
@@ -31,14 +31,14 @@ class LyricsController extends Controller
 
     public function index()
     {
-        $lyrics = Lyrics::all();
-        return LyricsResource::collection($lyrics);
-
-        // return response()->json([
-        //     'status' => 'success',
-        //     'result' => $lyrics
-        // ]);
-        
+        // get user role
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin', 'moderator', 'user'])) {
+            $lyrics = Lyrics::all();
+            return LyricsResource::collection($lyrics);
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -59,9 +59,15 @@ class LyricsController extends Controller
      */
     public function store(Request $request)
     {
-        $lyrics = Lyrics::create($request->all());
+        // get user role
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin', 'moderator', 'user'])) {
+            $lyrics = Lyrics::create($request->all());
 
-        return new LyricsResource($lyrics);
+            return new LyricsResource($lyrics);
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -95,17 +101,19 @@ class LyricsController extends Controller
      */
     public function update(Request $request, $lyrics)
     {
-        $lyrics = Lyrics::find($lyrics);
-
-        $lyrics->update($request->all());
-        return response()->json([
-            'status' => 'success',
-            'message' => 'lyrics updated successfully',
-            'result' => $lyrics
-        ]);
-
-
-        return new LyricsResource($lyrics);
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin'])) {
+            $lyrics = Lyrics::find($lyrics);
+            $lyrics->update($request->all());
+            return response()->json([
+                'status' => 'success',
+                'message' => 'lyrics updated successfully',
+                'result' => $lyrics
+            ]);
+            return new LyricsResource($lyrics);
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -117,20 +125,25 @@ class LyricsController extends Controller
     // create function to delete lyrics and return status depending on the result
     public function destroy($lyrics)
     {
-        $lyrics = Lyrics::find($lyrics);
-        if ($lyrics) {
-            $lyrics->delete();
-            return response()->json([
-                'status' => 'success',
-                'message' => 'lyrics deleted successfully',
-                'result' => $lyrics
-            ]);
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin'])) {
+            $lyrics = Lyrics::find($lyrics);
+            if ($lyrics) {
+                $lyrics->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'lyrics deleted successfully',
+                    'result' => $lyrics
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'lyrics not deleted',
+                    'result' => $lyrics
+                ]);
+            }
         } else {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'lyrics not deleted',
-                'result' => $lyrics
-            ]);
+            abort(403);
         }
     }
 }

@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Artist;
 use App\Http\Requests\StoreArtistRequest;
 use App\Http\Requests\UpdateArtistRequest;
+use Illuminate\Http\Request;
+
 
 class ArtistController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -22,12 +25,16 @@ class ArtistController extends Controller
 
     public function index()
     {
-        // get artists and user who created the artist and albums associated with each artist
-        $artists = Artist::with('user', 'albums')->get();
-        return response()->json([
-            'status' => 'success',
-            'result' => $artists
-        ]);
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin', 'moderator', 'user'])) {
+            $artists = Artist::with('user', 'albums')->get();
+            return response()->json([
+                'status' => 'success',
+                'result' => $artists
+            ]);
+        } else {
+            abort(403);
+        }
     }
     // vhjdskqbcvse
     /**
@@ -49,12 +56,17 @@ class ArtistController extends Controller
     public function store(StoreArtistRequest $request)
     {
         //
-        $artist = Artist::create($request->all());
-        return response()->json([
-            'status' => true,
-            'message' => "Artist Created successfully!",
-            'artist' => $artist
-        ], 201);
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin', 'moderator', 'user'])) {
+            $artist = Artist::create($request->all());
+            return response()->json([
+                'status' => true,
+                'message' => "Artist Created successfully!",
+                'artist' => $artist
+            ], 201);
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -65,20 +77,22 @@ class ArtistController extends Controller
      */
     public function show($artist)
     {
-        //
-        // return $artist->id;
-        // $artist = Artist::find($artist);
-        $artist = Artist::with('albums', 'user')->find($artist);
-        if (!$artist) {
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin', 'moderator', 'user'])) {
+            $artist = Artist::with('albums', 'user')->find($artist);
+            if (!$artist) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Artist not found'
+                ], 404);
+            }
             return response()->json([
-                'status' => 'error',
-                'message' => 'Artist not found'
-            ], 404);
+                'status' => 'success',
+                'result' => $artist
+            ]);
+        } else {
+            abort(403);
         }
-        return response()->json([
-            'status' => 'success',
-            'result' => $artist
-        ]);
     }
 
     /**
@@ -101,20 +115,24 @@ class ArtistController extends Controller
      */
     public function update(UpdateArtistRequest $request, $artist)
     {
-        //
-        $artist = Artist::find($artist);
-        if (!$artist) {
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin'])) {
+            $artist = Artist::find($artist);
+            if (!$artist) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Artist not found'
+                ], 404);
+            }
+            $artist->update($request->all());
             return response()->json([
-                'status' => 'error',
-                'message' => 'Artist not found'
-            ], 404);
+                'status' => 'success',
+                'message' => 'Artist updated successfully',
+                'result' => $artist
+            ]);
+        } else {
+            abort(403);
         }
-        $artist->update($request->all());
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Artist updated successfully',
-            'result' => $artist
-        ]);
     }
 
     /**
@@ -125,18 +143,22 @@ class ArtistController extends Controller
      */
     public function destroy($artist)
     {
-        //
-        $artist = Artist::find($artist);
-        if (!$artist) {
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin'])) {
+            if (!$artist) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Artist not found'
+                ], 404);
+            }
+            $artist->delete();
             return response()->json([
-                'status' => 'error',
-                'message' => 'Artist not found'
-            ], 404);
+                'status' => 'success',
+                'message' => 'Artist deleted successfully',
+            ]);
+        } else {
+            abort(403);
         }
-        $artist->delete();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Artist deleted successfully',
-        ]);
+        $artist = Artist::find($artist);
     }
 }

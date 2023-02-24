@@ -24,6 +24,13 @@ class ControllerRegister extends Controller
         $user->password = Hash::make($request->password);
 
         $user->save();
+        // give role to user
+        $user->assignRole('user');
+        return response()->json([
+            'success' => true,
+            'message' => 'user created successfully',
+            'user' => $user
+        ], Response::HTTP_OK);
     }
     public function login(Request $request)
     {

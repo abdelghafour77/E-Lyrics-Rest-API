@@ -22,13 +22,17 @@ class SongController extends Controller
 
     public function index()
     {
-        //
-        $songs = Song::with('album', 'user', 'lyrics')->get();
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin', 'moderator', 'user'])) {
+            $songs = Song::with('album', 'user', 'lyrics')->get();
 
-        return response()->json([
-            'status' => 'success',
-            'result' => $songs
-        ]);
+            return response()->json([
+                'status' => 'success',
+                'result' => $songs
+            ]);
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -49,14 +53,18 @@ class SongController extends Controller
      */
     public function store(StoreSongRequest $request)
     {
-        //
-        $song = Song::create($request->all());
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin', 'moderator', 'user'])) {
+            $song = Song::create($request->all());
 
-        return response()->json([
-            'status' => true,
-            'message' => "Song created successfully!",
-            'song' => $song
-        ], 201);
+            return response()->json([
+                'status' => true,
+                'message' => "Song created successfully!",
+                'song' => $song
+            ], 201);
+        } else {
+            abort(403);
+        }
     }
 
     /**
@@ -67,19 +75,23 @@ class SongController extends Controller
      */
     public function show($song)
     {
-        //return single song;
-        $song = Song::with('album', 'user', 'lyrics')->find($song);
-        if (!$song) {
-            return response()->json([
-                'status' => true,
-                'message' => "song not found!"
-            ], 404);
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin', 'moderator', 'user'])) {
+            $song = Song::with('album', 'user', 'lyrics')->find($song);
+            if (!$song) {
+                return response()->json([
+                    'status' => true,
+                    'message' => "song not found!"
+                ], 404);
+            } else {
+                $album = $song->album;
+                $song->album_name = $album->title;
+                return response()->json([
+                    'song' => $song
+                ], 200);
+            }
         } else {
-            $album = $song->album;
-            $song->album_name = $album->title;
-            return response()->json([
-                'song' => $song
-            ], 200);
+            abort(403);
         }
     }
 
@@ -103,22 +115,27 @@ class SongController extends Controller
      */
     public function update(StoreSongRequest $request, $song)
     {
-        $song = Song::find($song);
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin'])) {
+            $song = Song::find($song);
 
-        if (!$song) {
-            return response()->json(
-                [
-                    'message' => 'song not found'
-                ],
-                404
-            );
+            if (!$song) {
+                return response()->json(
+                    [
+                        'message' => 'song not found'
+                    ],
+                    404
+                );
+            }
+            $song->update($request->all());
+            return response()->json([
+                'status' => true,
+                'message' => "song Updated successfully!",
+                'song' => $song
+            ], 200);
+        } else {
+            abort(403);
         }
-        $song->update($request->all());
-        return response()->json([
-            'status' => true,
-            'message' => "song Updated successfully!",
-            'song' => $song
-        ], 200);
     }
 
     /**
@@ -129,21 +146,26 @@ class SongController extends Controller
      */
     public function destroy($song)
     {
-        $song = Song::find($song);
+        $user = auth()->user();
+        if ($user->hasAnyRole(['admin'])) {
+            $song = Song::find($song);
 
-        if ($song) {
-            $song->delete();
-            return response()->json([
-                'status' => 'success',
-                'message' => 'song deleted successfully',
-                'result' => $song
-            ]);
+            if ($song) {
+                $song->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'song deleted successfully',
+                    'result' => $song
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'song not deleted',
+                    'result' => $song
+                ]);
+            }
         } else {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'song not deleted',
-                'result' => $song
-            ]);
+            abort(403);
         }
     }
 }
