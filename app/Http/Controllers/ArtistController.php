@@ -143,19 +143,26 @@ class ArtistController extends Controller
      */
     public function destroy($artist)
     {
+
         $user = auth()->user();
         if ($user->hasAnyRole(['admin'])) {
-            if (!$artist) {
+            $artist = Artist::find($artist);
+
+            if ($artist) {
+                $artist->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Artist deleted successfully',
+                    'result' => $artist
+                ]);
+            } else {
+
                 return response()->json([
                     'status' => 'error',
-                    'message' => 'Artist not found'
-                ], 404);
+                    'message' => 'Artist not found',
+                    'result' => $artist
+                ]);
             }
-            $artist->delete();
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Artist deleted successfully',
-            ]);
         } else {
             abort(403);
         }
