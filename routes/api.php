@@ -12,6 +12,7 @@ use App\Http\Controllers\ControllerRegister;
 use Tymon\JWTAuth\Providers\JWT\Provider;
 use App\Http\Controllers\SongController;
 use App\Http\Controllers\ArtistController;
+use App\Http\Controllers\ProfileController;
 
 
 /*
@@ -48,3 +49,6 @@ Route::apiResource('songs', SongController::class);
 
 // ressources for the APIcfor artists table
 Route::apiResource('artists', ArtistController::class);
+// Route::post('/profile/change_password', [ProfileController::class, 'change_password']);
+Route::post('/profile/update/{id}', [ProfileController::class, 'update_profile']);
+// Route::post('/profile/change_password',[ProfileController::class,'change_password'])->middleware('auth:api');
