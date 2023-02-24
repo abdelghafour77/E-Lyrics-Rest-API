@@ -23,15 +23,7 @@ class SongController extends Controller
     public function index()
     {
         //
-        $songs = Song::all();
-
-        foreach ($songs as $song) {
-            $album = $song->album;
-            $song->album_name = $album->title;
-
-            $user = $song->user;
-            $song->user_name = $user->name;
-        }
+        $songs = Song::with('album', 'user', 'lyrics')->get();
 
         return response()->json([
             'status' => 'success',
@@ -73,10 +65,10 @@ class SongController extends Controller
      * @param  \App\Models\Song  $song
      * @return \Illuminate\Http\Response
      */
-    public function show(Song $song)
+    public function show($song)
     {
         //return single song;
-        $song = Song::find($song->id);
+        $song = Song::with('album', 'user', 'lyrics')->find($song);
         if (!$song) {
             return response()->json([
                 'status' => true,
@@ -109,19 +101,19 @@ class SongController extends Controller
      * @param  \App\Models\Song  $song
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreSongRequest $request, Song $song)
+    public function update(StoreSongRequest $request, $song)
     {
-        // return 5;
-
-        // dd($request->all());
-        // return;
-        $song->update($request->all());
+        $song = Song::find($song);
 
         if (!$song) {
-            return response()->json(['message' =>
-            'song not found'], 404);
+            return response()->json(
+                [
+                    'message' => 'song not found'
+                ],
+                404
+            );
         }
-
+        $song->update($request->all());
         return response()->json([
             'status' => true,
             'message' => "song Updated successfully!",
@@ -138,6 +130,7 @@ class SongController extends Controller
     public function destroy($song)
     {
         $song = Song::find($song);
+
         if ($song) {
             $song->delete();
             return response()->json([
