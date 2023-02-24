@@ -38,7 +38,7 @@ class LyricsController extends Controller
         //     'status' => 'success',
         //     'result' => $lyrics
         // ]);
-        
+
     }
 
     /**
@@ -70,9 +70,23 @@ class LyricsController extends Controller
      * @param  \App\Models\Lyrics  $lyrics
      * @return \Illuminate\Http\Response
      */
-    public function show(Lyrics $lyrics)
+    public function show($lyrics)
     {
-        //
+        //create function to show lyrics and return status depending on the result
+        $lyrics = Lyrics::find($lyrics);
+        if ($lyrics) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'lyrics found',
+                'result' => $lyrics
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'lyrics not found',
+                'result' => $lyrics
+            ]);
+        }
     }
 
     /**

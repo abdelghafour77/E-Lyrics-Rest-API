@@ -127,16 +127,21 @@ class ArtistController extends Controller
     {
         //
         $artist = Artist::find($artist);
-        if (!$artist) {
+
+        if ($artist) {
+            $artist->delete();
+            return response()->json([
+                'status' => 'success',
+                'message' => 'artist deleted successfully',
+                'result' => $artist
+            ]);
+        } else {
+
             return response()->json([
                 'status' => 'error',
-                'message' => 'Artist not found'
-            ], 404);
+                'message' => 'artist not deleted',
+                'result' => $artist
+            ]);
         }
-        $artist->delete();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Artist deleted successfully',
-        ]);
-    }
+}
 }
