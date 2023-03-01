@@ -157,7 +157,7 @@ class LyricsController extends Controller
                 ]);
             }
         } else {
-            abort(403);
+            abort(405);
         }
     }
 }
